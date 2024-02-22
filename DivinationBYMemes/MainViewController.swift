@@ -9,6 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
     
+    private var textField: UITextField!
     private var stackView = UIStackView()
     
     override func viewDidLoad() {
@@ -29,7 +30,7 @@ class MainViewController: UIViewController {
     }
     
     private func createTextField() {
-        let textField = UITextField()
+        textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.widthAnchor.constraint(equalToConstant: 250).isActive = true
         stackView.addArrangedSubview(textField)
@@ -50,7 +51,17 @@ class MainViewController: UIViewController {
     }
     
     @objc func askButtonTapped() {
-        print("Button tapped")
+        //        let divinationVC = DivinationViewController()
+        //        divinationVC.divinationText = textField.text
+        //        present(divinationVC, animated: true, completion: nil)
+        
+        let divinationVC = DivinationViewController()
+        divinationVC.divinationText = textField.text
+        let navigationController = UINavigationController(rootViewController: divinationVC)
+        navigationController.modalPresentationStyle = .fullScreen
+        // navigationController.navigationBar.isHidden = true
+        present(navigationController, animated: true, completion: nil)
+        
     }
 }
 
