@@ -8,80 +8,83 @@
 import UIKit
 
 class MainViewController: UIViewController {
+
+    private lazy var mainStackView: UIStackView = {
+        let element = UIStackView()
+        element.spacing = 120
+        element.alignment = .center
+        element.axis = .vertical
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
     
-    private var textField: UITextField!
-    private var stackView = UIStackView()
+    private lazy var mainLabel: UILabel = {
+        let element = UILabel()
+        element.text = "Write you question"
+        element.font = .systemFont(ofSize: 24, weight: .medium)
+        element.textAlignment = .center
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
+    
+    let questionTF: UITextField = {
+        let element = UITextField()
+        element.borderStyle = .roundedRect
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
+    
+    private let askButton: UIButton = {
+        let element = UIButton()
+        element.backgroundColor = .systemCyan
+        element.setTitle("Ask", for: .normal)
+        element.setTitleColor(.white, for: .normal)
+        element.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        element.layer.cornerRadius = 10
+        element.addTarget(self, action: #selector(askButtonTapped), for: .touchUpInside)
+        element.translatesAutoresizingMaskIntoConstraints = false
+        return element
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setViews()
-        setConstraints()
-        createLabel()
-        createTextField()
-        createButton()
+        setupConstraints()
     }
-    
-    private func createLabel() {
-        let label = UILabel()
-        label.text = "Write you question"
-        label.font = .systemFont(ofSize: 24, weight: .medium)
-        label.textAlignment = .center
-        stackView.addArrangedSubview(label)
-    }
-    
-    private func createTextField() {
-        textField = UITextField()
-        textField.borderStyle = .roundedRect
-        textField.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        stackView.addArrangedSubview(textField)
-    }
-    
-    private func createButton() {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .systemCyan
-        button.setTitle("Ask", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        button.addTarget(self, action: #selector(askButtonTapped), for: .touchUpInside)
-        button.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.layer.cornerRadius = 10
-        stackView.addArrangedSubview(button)
-        
-    }
-    
+   
     @objc func askButtonTapped() {
-        //        let divinationVC = DivinationViewController()
-        //        divinationVC.divinationText = textField.text
-        //        present(divinationVC, animated: true, completion: nil)
         
         let divinationVC = DivinationViewController()
-        divinationVC.divinationText = textField.text
+        divinationVC.divinationText = questionTF.text
         let navigationController = UINavigationController(rootViewController: divinationVC)
         navigationController.modalPresentationStyle = .fullScreen
-        // navigationController.navigationBar.isHidden = true
+        //                navigationController.navigationBar.isHidden = true
         present(navigationController, animated: true, completion: nil)
         
     }
 }
 
 extension MainViewController {
+    
     private func setViews() {
         view.backgroundColor = .white
-        view.addSubview(stackView)
-        stackView.axis = .vertical
-        stackView.spacing = 80
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(mainStackView)
         
+        mainStackView.addArrangedSubview(mainLabel)
+        mainStackView.addArrangedSubview(questionTF)
+        mainStackView.addArrangedSubview(askButton)
     }
     
-    private func setConstraints() {
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            mainStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            mainStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            questionTF.widthAnchor.constraint(equalToConstant: 250),
+            
+            askButton.widthAnchor.constraint(equalToConstant: 250),
+            askButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    
 }
+
